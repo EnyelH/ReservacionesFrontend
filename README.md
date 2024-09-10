@@ -1,70 +1,121 @@
-# Getting Started with Create React App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+**************************************************
+****CODIGO FUENTE FRONTEND Y CONSUMOS A LA API****
+**************************************************
 
-## Available Scripts
+import axios from 'axios';
 
-In the project directory, you can run:
+const BASE_URL = 'http://localhost:8080/api/reservaciones';
 
-### `npm start`
+// Obtener reservaciones por nombre
+export const obtenerReservacionPorNombre = (nombreTitular) => {
+  return axios.get(`${BASE_URL}/nombre/${nombreTitular}`);
+};
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+// Actualizar una reservación
+export const actualizarReservacion = (id, reservacion) => {
+  return axios.put(`${BASE_URL}/${id}`, reservacion);
+};
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+// Borrar una reservación por fecha
+export const borrarReservacion = (fecha) => {
+  return axios.delete(`${BASE_URL}/fecha/${fecha}`);
+};
 
-### `npm test`
+// Obtener todas las reservaciones
+export const getReservaciones = () => {
+  return axios.get(BASE_URL);
+};
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+// Obtener reservaciones por nombre (similar al anterior)
+export const getReservacionesPorNombre = (nombreTitular) => {
+  return axios.get(`${BASE_URL}/nombre/${nombreTitular}`);
+};
 
-### `npm run build`
+// Registrar una nueva reservación
+export const registrarReservacion = (reservacion) => {
+  return axios.post(BASE_URL, reservacion);
+};
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+*****************************************************
+******INSTRUCIONES DE USO Y DESPLIEGUE BACKEND*******
+*****************************************************
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Proyecto no muy grande que en resumen realiza un crud para reservaciones: 
 
-### `npm run eject`
+Configuración del Backend (Spring Boot)
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+1- Pre-requisitos:
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+	*- Java 11 o superior instalado en tu sistema.
+	*- Maven o Gradle configurado como gestor de dependencias.
+	*- PostgreSQL (o la base de datos que estás utilizando) instalado y en ejecución.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+2- Configuración de la base de datos (PostgreSQL):
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+	*- Asegurarnos de tener una base de datos configurada en este caso usaremos PostgreSQL
+   	   CREATE DATABASE reservaciones
 
-## Learn More
+	*- Configurar el archivo application.properties o application.yml con los detalles de conexión de la base de datos:
+		spring.datasource.url=jdbc:postgresql://localhost:5432/reservaciones
+		spring.datasource.username=tu_usuario
+		spring.datasource.password=tu_contraseña
+		spring.jpa.hibernate.ddl-auto=update
+		spring.jpa.show-sql=true
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+3- Compilación y ejecución del proyecto Spring Boot:
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+	*-Desde la línea de comandos, en la carpeta raíz del proyecto, ejecuta: 
+		mvn clean install
+		mvn spring-boot:run
 
-### Code Splitting
+	*-Esto iniciará el servidor backend en el puerto configurado (por defecto 8080). 
+	  Puedes acceder a la API en http://localhost:8080.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+4- Pruebas del backend:
 
-### Analyzing the Bundle Size
+	*-Verifica que la API esté funcionando correctamente accediendo a los endpoints de prueba, como:
+	      GET http://localhost:8080/apireservaciones 
+	  NOTA: primero debes crear una reservacion antes de consultarla.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+	*-Usamos Postman para probar los diferentes endpoints del API.
+	  NOTA: la documentacion de Postman esta en el archivo de texto del BACKEND.
+	  link: https://warped-astronaut-279843.postman.co/workspace/Heinsohn-Panas~666a932b-e0ba-415c-870a-282cc0ba6f49/documentation/26045723-8ef2eb95-5a06-4b59-96e2-af84026e1526
 
-### Making a Progressive Web App
+***************************************************
+******INSTRUCIONES DE USO Y DESPLIEGUE BACKEND*****
+***************************************************
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+Configuración del Frontend (React)
 
-### Advanced Configuration
+1-Pre-requisitos:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+	*- Node.js y npm (Node Package Manager) instalados en nuestro sistema.
 
-### Deployment
+2-Instalación de dependencias:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+	*-Navega a la carpeta del frontend y ejecuta el siguiente comando para instalar las dependencias:
+		npm install
 
-### `npm run build` fails to minify
+	*-Asegúrate de que los archivos package.json incluyan todas las dependencias necesarias como:
+ 	  react, axios, bootstrap, etc.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+3-Configuración de la conexión con el backend:
+
+	*- Asegúrarnos de que las solicitudes de la API en el frontend apunten a la URL correcta
+ 	   del backend (por ejemplo, http://localhost:8080 si ambos están corriendo en local).
+	   NOTA: desde el back configure las conexciones vengan desde cualquier puerto. archivo (WebConfig)
+
+	*- En este caso estamos usando AXIOS:
+		axios.get('http://localhost:8080/api/reservaciones')
+  			.then(response => {
+    				console.log(response.data);
+  		});
+
+4-Compilación y ejecución del frontend:
+
+	*-Ejecuta el siguiente comando para iniciar el servidor de desarrollo del frontend:
+		npm start
+
+	*-Esto iniciará el servidor frontend en http://localhost:3000, y ya se puede interactuar con la interfaz.
